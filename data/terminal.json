@@ -1,0 +1,821 @@
+[
+ {
+  "id": "t-ls-la",
+  "deck": "term",
+  "category": "files",
+  "prompt": "List every file in this directory, hidden ones included, in long form",
+  "answer": "ls -la",
+  "accept": [
+   "ls -la",
+   "ls -al",
+   "ls -la ."
+  ],
+  "hint": "-l is the long listing, -a stops hiding dotfiles."
+ },
+ {
+  "id": "t-find-name",
+  "deck": "term",
+  "category": "files",
+  "prompt": "Find every .log file under the current directory",
+  "answer": "find . -name '*.log'",
+  "accept": [
+   "find . -name '*.log'",
+   "find . -type f -name '*.log'"
+  ],
+  "hint": "-name matches the basename and needs the glob quoted."
+ },
+ {
+  "id": "t-find-mtime",
+  "deck": "term",
+  "category": "files",
+  "prompt": "Find files under . modified in the last 2 days",
+  "answer": "find . -mtime -2",
+  "accept": [
+   "find . -mtime -2",
+   "find . -type f -mtime -2"
+  ],
+  "hint": "-mtime -2 means 'less than 2 days old'."
+ },
+ {
+  "id": "t-cp-r",
+  "deck": "term",
+  "category": "files",
+  "prompt": "Copy the directory src to dest, contents and all",
+  "answer": "cp -r src dest",
+  "accept": [
+   "cp -r src dest",
+   "cp -a src dest",
+   "cp -R src dest"
+  ],
+  "hint": "-r recurses into the directory."
+ },
+ {
+  "id": "t-mv",
+  "deck": "term",
+  "category": "files",
+  "prompt": "Rename the file old to new",
+  "answer": "mv old new",
+  "accept": [
+   "mv old new"
+  ],
+  "hint": "mv both moves and renames."
+ },
+ {
+  "id": "t-rm-rf",
+  "deck": "term",
+  "category": "files",
+  "prompt": "Delete the directory build and everything in it",
+  "answer": "rm -rf build",
+  "accept": [
+   "rm -rf build",
+   "rm -r build"
+  ],
+  "hint": "-r recurses, -f suppresses prompts. No undo."
+ },
+ {
+  "id": "t-mkdir-p",
+  "deck": "term",
+  "category": "files",
+  "prompt": "Create the nested directory a/b/c in one command",
+  "answer": "mkdir -p a/b/c",
+  "accept": [
+   "mkdir -p a/b/c"
+  ],
+  "hint": "-p creates missing parents instead of erroring."
+ },
+ {
+  "id": "t-ln-s",
+  "deck": "term",
+  "category": "files",
+  "prompt": "Create a symlink named link pointing at target",
+  "answer": "ln -s target link",
+  "accept": [
+   "ln -s target link"
+  ],
+  "hint": "Target comes first, then the name of the link."
+ },
+ {
+  "id": "t-du-sh",
+  "deck": "term",
+  "category": "files",
+  "prompt": "Show the total size of the dir directory in human units",
+  "answer": "du -sh dir",
+  "accept": [
+   "du -sh dir"
+  ],
+  "hint": "-s summarises instead of listing every file, -h is human-readable."
+ },
+ {
+  "id": "t-df-h",
+  "deck": "term",
+  "category": "files",
+  "prompt": "Show free disk space on all mounts in human units",
+  "answer": "df -h",
+  "accept": [
+   "df -h"
+  ],
+  "hint": "-h turns blocks into K/M/G."
+ },
+ {
+  "id": "t-wc-l",
+  "deck": "term",
+  "category": "files",
+  "prompt": "Count the lines in file.txt",
+  "answer": "wc -l file.txt",
+  "accept": [
+   "wc -l file.txt"
+  ],
+  "hint": "-l counts lines, -w words, -c bytes."
+ },
+ {
+  "id": "t-stat-file",
+  "deck": "term",
+  "category": "files",
+  "prompt": "Show what kind of file data.bin is",
+  "answer": "file data.bin",
+  "accept": [
+   "file data.bin"
+  ],
+  "hint": "file inspects content, not the extension."
+ },
+ {
+  "id": "t-grep-r",
+  "deck": "term",
+  "category": "text",
+  "prompt": "Search every file under . for the text TODO",
+  "answer": "grep -r TODO .",
+  "accept": [
+   "grep -r TODO .",
+   "grep -rn TODO .",
+   "grep -R TODO ."
+  ],
+  "hint": "-r walks the directory tree."
+ },
+ {
+  "id": "t-grep-i",
+  "deck": "term",
+  "category": "text",
+  "prompt": "Search file.txt for error, ignoring case",
+  "answer": "grep -i error file.txt",
+  "accept": [
+   "grep -i error file.txt"
+  ],
+  "hint": "-i makes the match case-insensitive."
+ },
+ {
+  "id": "t-grep-n",
+  "deck": "term",
+  "category": "text",
+  "prompt": "Search file.txt for error and show line numbers",
+  "answer": "grep -n error file.txt",
+  "accept": [
+   "grep -n error file.txt"
+  ],
+  "hint": "-n prefixes each hit with its line number."
+ },
+ {
+  "id": "t-grep-v",
+  "deck": "term",
+  "category": "text",
+  "prompt": "Show every line of file.txt that does NOT contain debug",
+  "answer": "grep -v debug file.txt",
+  "accept": [
+   "grep -v debug file.txt"
+  ],
+  "hint": "-v inverts the match."
+ },
+ {
+  "id": "t-sed-i",
+  "deck": "term",
+  "category": "text",
+  "prompt": "Replace every occurrence of old with new inside file.txt, in place",
+  "answer": "sed -i 's/old/new/g' file.txt",
+  "accept": [
+   "sed -i 's/old/new/g' file.txt"
+  ],
+  "hint": "-i edits the file itself; /g catches every hit on a line."
+ },
+ {
+  "id": "t-head",
+  "deck": "term",
+  "category": "text",
+  "prompt": "Show the first 20 lines of file.txt",
+  "answer": "head -20 file.txt",
+  "accept": [
+   "head -20 file.txt",
+   "head -n 20 file.txt"
+  ],
+  "hint": "-n sets the count."
+ },
+ {
+  "id": "t-tail",
+  "deck": "term",
+  "category": "text",
+  "prompt": "Show the last 20 lines of file.txt",
+  "answer": "tail -20 file.txt",
+  "accept": [
+   "tail -20 file.txt",
+   "tail -n 20 file.txt"
+  ],
+  "hint": "-n sets the count."
+ },
+ {
+  "id": "t-tail-f",
+  "deck": "term",
+  "category": "text",
+  "prompt": "Watch app.log as new lines are written to it",
+  "answer": "tail -f app.log",
+  "accept": [
+   "tail -f app.log",
+   "tail -F app.log"
+  ],
+  "hint": "-f follows the file as it grows."
+ },
+ {
+  "id": "t-sort-uniq",
+  "deck": "term",
+  "category": "text",
+  "prompt": "Sort file.txt and remove duplicate lines",
+  "answer": "sort file.txt | uniq",
+  "accept": [
+   "sort file.txt | uniq",
+   "sort -u file.txt"
+  ],
+  "hint": "uniq only collapses adjacent duplicates, so sort first."
+ },
+ {
+  "id": "t-uniq-c",
+  "deck": "term",
+  "category": "text",
+  "prompt": "Count how often each line appears in file.txt, most frequent first",
+  "answer": "sort file.txt | uniq -c | sort -rn",
+  "accept": [
+   "sort file.txt | uniq -c | sort -rn"
+  ],
+  "hint": "-c counts, then -rn sorts numerically in reverse."
+ },
+ {
+  "id": "t-awk-col",
+  "deck": "term",
+  "category": "text",
+  "prompt": "Print the second whitespace-separated column of file.txt",
+  "answer": "awk '{print $2}' file.txt",
+  "accept": [
+   "awk '{print $2}' file.txt"
+  ],
+  "hint": "awk splits on whitespace by default."
+ },
+ {
+  "id": "t-cut-d",
+  "deck": "term",
+  "category": "text",
+  "prompt": "Print the first colon-separated field of /etc/passwd",
+  "answer": "cut -d: -f1 /etc/passwd",
+  "accept": [
+   "cut -d: -f1 /etc/passwd",
+   "cut -d ':' -f1 /etc/passwd"
+  ],
+  "hint": "-d sets the delimiter, -f picks the field."
+ },
+ {
+  "id": "t-ps-aux",
+  "deck": "term",
+  "category": "processes",
+  "prompt": "List every running process on the system",
+  "answer": "ps aux",
+  "accept": [
+   "ps aux",
+   "ps -ef"
+  ],
+  "hint": "aux is the classic BSD-style everything listing."
+ },
+ {
+  "id": "t-kill",
+  "deck": "term",
+  "category": "processes",
+  "prompt": "Politely terminate the process with PID 1234",
+  "answer": "kill 1234",
+  "accept": [
+   "kill 1234"
+  ],
+  "hint": "Plain kill sends SIGTERM, which lets the process clean up."
+ },
+ {
+  "id": "t-kill-9",
+  "deck": "term",
+  "category": "processes",
+  "prompt": "Force-kill PID 1234 immediately",
+  "answer": "kill -9 1234",
+  "accept": [
+   "kill -9 1234",
+   "kill -KILL 1234"
+  ],
+  "hint": "-9 is SIGKILL; it cannot be caught or cleaned up after."
+ },
+ {
+  "id": "t-pkill",
+  "deck": "term",
+  "category": "processes",
+  "prompt": "Kill every process named firefox",
+  "answer": "pkill firefox",
+  "accept": [
+   "pkill firefox",
+   "killall firefox"
+  ],
+  "hint": "pkill matches by name instead of PID."
+ },
+ {
+  "id": "t-pgrep",
+  "deck": "term",
+  "category": "processes",
+  "prompt": "Find the PID of every process named nginx",
+  "answer": "pgrep nginx",
+  "accept": [
+   "pgrep nginx",
+   "pgrep -f nginx"
+  ],
+  "hint": "pgrep is pkill's read-only twin."
+ },
+ {
+  "id": "t-bg-amp",
+  "deck": "term",
+  "category": "processes",
+  "prompt": "Run longtask in the background",
+  "answer": "longtask &",
+  "accept": [
+   "longtask &"
+  ],
+  "hint": "A trailing & detaches it from your prompt."
+ },
+ {
+  "id": "t-jobs",
+  "deck": "term",
+  "category": "processes",
+  "prompt": "List the background jobs of this shell",
+  "answer": "jobs",
+  "accept": [
+   "jobs"
+  ],
+  "hint": "Jobs are per-shell, unlike ps."
+ },
+ {
+  "id": "t-nohup",
+  "deck": "term",
+  "category": "processes",
+  "prompt": "Run longtask so it survives the terminal closing",
+  "answer": "nohup longtask &",
+  "accept": [
+   "nohup longtask &"
+  ],
+  "hint": "nohup detaches it from the terminal's hangup signal."
+ },
+ {
+  "id": "t-chmod-x",
+  "deck": "term",
+  "category": "permissions",
+  "prompt": "Make script.sh executable",
+  "answer": "chmod +x script.sh",
+  "accept": [
+   "chmod +x script.sh"
+  ],
+  "hint": "+x adds the execute bit for everyone."
+ },
+ {
+  "id": "t-chmod-755",
+  "deck": "term",
+  "category": "permissions",
+  "prompt": "Set script.sh to rwxr-xr-x using octal",
+  "answer": "chmod 755 script.sh",
+  "accept": [
+   "chmod 755 script.sh"
+  ],
+  "hint": "7=rwx owner, 5=r-x group, 5=r-x other."
+ },
+ {
+  "id": "t-chown",
+  "deck": "term",
+  "category": "permissions",
+  "prompt": "Change the owner of file.txt to user shaun and group users",
+  "answer": "chown shaun:users file.txt",
+  "accept": [
+   "chown shaun:users file.txt"
+  ],
+  "hint": "owner:group, colon separated."
+ },
+ {
+  "id": "t-chown-r",
+  "deck": "term",
+  "category": "permissions",
+  "prompt": "Recursively give shaun ownership of the dir directory",
+  "answer": "chown -R shaun dir",
+  "accept": [
+   "chown -R shaun dir"
+  ],
+  "hint": "-R walks the whole tree."
+ },
+ {
+  "id": "t-sudo",
+  "deck": "term",
+  "category": "permissions",
+  "prompt": "Run pacman -Syu as root",
+  "answer": "sudo pacman -Syu",
+  "accept": [
+   "sudo pacman -Syu"
+  ],
+  "hint": "sudo elevates a single command."
+ },
+ {
+  "id": "t-whoami",
+  "deck": "term",
+  "category": "permissions",
+  "prompt": "Print the username you are currently acting as",
+  "answer": "whoami",
+  "accept": [
+   "whoami"
+  ],
+  "hint": "Useful for checking whether sudo actually took."
+ },
+ {
+  "id": "t-groups",
+  "deck": "term",
+  "category": "permissions",
+  "prompt": "List the groups your user belongs to",
+  "answer": "groups",
+  "accept": [
+   "groups",
+   "id -Gn"
+  ],
+  "hint": "Group membership is what gates most device access."
+ },
+ {
+  "id": "t-curl-o",
+  "deck": "term",
+  "category": "network",
+  "prompt": "Download https://x.dev/f.tar.gz keeping its remote filename",
+  "answer": "curl -O https://x.dev/f.tar.gz",
+  "accept": [
+   "curl -O https://x.dev/f.tar.gz",
+   "wget https://x.dev/f.tar.gz"
+  ],
+  "hint": "-O (capital) keeps the remote name; -o renames."
+ },
+ {
+  "id": "t-curl-s",
+  "deck": "term",
+  "category": "network",
+  "prompt": "Fetch https://x.dev/api quietly, printing only the body",
+  "answer": "curl -s https://x.dev/api",
+  "accept": [
+   "curl -s https://x.dev/api"
+  ],
+  "hint": "-s silences the progress meter."
+ },
+ {
+  "id": "t-ping",
+  "deck": "term",
+  "category": "network",
+  "prompt": "Send exactly 4 pings to example.com",
+  "answer": "ping -c 4 example.com",
+  "accept": [
+   "ping -c 4 example.com"
+  ],
+  "hint": "-c bounds the count so it stops on its own."
+ },
+ {
+  "id": "t-ss",
+  "deck": "term",
+  "category": "network",
+  "prompt": "List listening TCP sockets with the owning process",
+  "answer": "ss -ltnp",
+  "accept": [
+   "ss -ltnp",
+   "ss -tlnp"
+  ],
+  "hint": "l=listening t=tcp n=numeric p=process. ss replaced netstat."
+ },
+ {
+  "id": "t-ssh",
+  "deck": "term",
+  "category": "network",
+  "prompt": "Open a shell on host.dev as user shaun",
+  "answer": "ssh shaun@host.dev",
+  "accept": [
+   "ssh shaun@host.dev"
+  ],
+  "hint": "user@host, same shape as scp."
+ },
+ {
+  "id": "t-scp",
+  "deck": "term",
+  "category": "network",
+  "prompt": "Copy local file.txt to /srv on host.dev as shaun",
+  "answer": "scp file.txt shaun@host.dev:/srv",
+  "accept": [
+   "scp file.txt shaun@host.dev:/srv"
+  ],
+  "hint": "Remote side is host:path."
+ },
+ {
+  "id": "t-rsync",
+  "deck": "term",
+  "category": "network",
+  "prompt": "Mirror the contents of src/ into dest/ preserving attributes",
+  "answer": "rsync -av src/ dest/",
+  "accept": [
+   "rsync -av src/ dest/",
+   "rsync -avz src/ dest/"
+  ],
+  "hint": "The trailing slash on src means 'contents of', not 'the directory'."
+ },
+ {
+  "id": "t-ip-a",
+  "deck": "term",
+  "category": "network",
+  "prompt": "Show all network interfaces and their addresses",
+  "answer": "ip a",
+  "accept": [
+   "ip a",
+   "ip addr",
+   "ip addr show"
+  ],
+  "hint": "ip replaced ifconfig."
+ },
+ {
+  "id": "t-tar-c",
+  "deck": "term",
+  "category": "archives",
+  "prompt": "Create out.tar.gz containing the dir directory",
+  "answer": "tar czf out.tar.gz dir",
+  "accept": [
+   "tar czf out.tar.gz dir",
+   "tar -czf out.tar.gz dir"
+  ],
+  "hint": "c=create z=gzip f=filename."
+ },
+ {
+  "id": "t-tar-x",
+  "deck": "term",
+  "category": "archives",
+  "prompt": "Extract out.tar.gz into the current directory",
+  "answer": "tar xzf out.tar.gz",
+  "accept": [
+   "tar xzf out.tar.gz",
+   "tar -xzf out.tar.gz",
+   "tar xf out.tar.gz"
+  ],
+  "hint": "x=extract. Modern tar detects the compression itself."
+ },
+ {
+  "id": "t-tar-t",
+  "deck": "term",
+  "category": "archives",
+  "prompt": "List what is inside out.tar.gz without extracting",
+  "answer": "tar tzf out.tar.gz",
+  "accept": [
+   "tar tzf out.tar.gz",
+   "tar -tzf out.tar.gz",
+   "tar tf out.tar.gz"
+  ],
+  "hint": "t=list. Always worth doing before extracting."
+ },
+ {
+  "id": "t-zip-r",
+  "deck": "term",
+  "category": "archives",
+  "prompt": "Zip the dir directory into out.zip",
+  "answer": "zip -r out.zip dir",
+  "accept": [
+   "zip -r out.zip dir"
+  ],
+  "hint": "-r is required for directories."
+ },
+ {
+  "id": "t-unzip",
+  "deck": "term",
+  "category": "archives",
+  "prompt": "Extract out.zip here",
+  "answer": "unzip out.zip",
+  "accept": [
+   "unzip out.zip"
+  ],
+  "hint": "Add -d to choose a destination."
+ },
+ {
+  "id": "t-gzip",
+  "deck": "term",
+  "category": "archives",
+  "prompt": "Compress file.txt in place with gzip",
+  "answer": "gzip file.txt",
+  "accept": [
+   "gzip file.txt"
+  ],
+  "hint": "Replaces the file with file.txt.gz."
+ },
+ {
+  "id": "t-git-status",
+  "deck": "term",
+  "category": "git",
+  "prompt": "Show the working tree status",
+  "answer": "git status",
+  "accept": [
+   "git status",
+   "git status -s"
+  ],
+  "hint": "Your most-typed git command."
+ },
+ {
+  "id": "t-git-add",
+  "deck": "term",
+  "category": "git",
+  "prompt": "Stage every change in the working tree",
+  "answer": "git add .",
+  "accept": [
+   "git add .",
+   "git add -A"
+  ],
+  "hint": ". stages from here down, -A stages the whole repo."
+ },
+ {
+  "id": "t-git-commit",
+  "deck": "term",
+  "category": "git",
+  "prompt": "Commit staged changes with the message fix bug",
+  "answer": "git commit -m 'fix bug'",
+  "accept": [
+   "git commit -m 'fix bug'",
+   "git commit -m \"fix bug\""
+  ],
+  "hint": "-m avoids opening the editor."
+ },
+ {
+  "id": "t-git-push",
+  "deck": "term",
+  "category": "git",
+  "prompt": "Push the current branch to its remote",
+  "answer": "git push",
+  "accept": [
+   "git push"
+  ],
+  "hint": "Add -u origin branch the first time."
+ },
+ {
+  "id": "t-git-pull",
+  "deck": "term",
+  "category": "git",
+  "prompt": "Fetch and merge the remote's changes",
+  "answer": "git pull",
+  "accept": [
+   "git pull"
+  ],
+  "hint": "Equivalent to git fetch then git merge."
+ },
+ {
+  "id": "t-git-branch-new",
+  "deck": "term",
+  "category": "git",
+  "prompt": "Create a branch called feature and switch to it",
+  "answer": "git switch -c feature",
+  "accept": [
+   "git switch -c feature",
+   "git checkout -b feature"
+  ],
+  "hint": "switch is the modern verb; checkout -b still works."
+ },
+ {
+  "id": "t-git-log",
+  "deck": "term",
+  "category": "git",
+  "prompt": "Show the history one commit per line",
+  "answer": "git log --oneline",
+  "accept": [
+   "git log --oneline"
+  ],
+  "hint": "Add --graph to see the branch shape."
+ },
+ {
+  "id": "t-git-diff-staged",
+  "deck": "term",
+  "category": "git",
+  "prompt": "Show the diff of what is staged but not committed",
+  "answer": "git diff --staged",
+  "accept": [
+   "git diff --staged",
+   "git diff --cached"
+  ],
+  "hint": "Plain git diff shows unstaged changes instead."
+ },
+ {
+  "id": "t-git-restore",
+  "deck": "term",
+  "category": "git",
+  "prompt": "Throw away uncommitted changes to file.txt",
+  "answer": "git restore file.txt",
+  "accept": [
+   "git restore file.txt",
+   "git checkout -- file.txt"
+  ],
+  "hint": "restore is the modern verb. This is destructive."
+ },
+ {
+  "id": "t-git-remote",
+  "deck": "term",
+  "category": "git",
+  "prompt": "List the remotes with their URLs",
+  "answer": "git remote -v",
+  "accept": [
+   "git remote -v"
+  ],
+  "hint": "-v shows fetch and push URLs."
+ },
+ {
+  "id": "t-systemctl-status",
+  "deck": "term",
+  "category": "system",
+  "prompt": "Show the status of the nginx service",
+  "answer": "systemctl status nginx",
+  "accept": [
+   "systemctl status nginx"
+  ],
+  "hint": "Includes the last few log lines."
+ },
+ {
+  "id": "t-systemctl-restart",
+  "deck": "term",
+  "category": "system",
+  "prompt": "Restart the nginx service",
+  "answer": "systemctl restart nginx",
+  "accept": [
+   "systemctl restart nginx",
+   "sudo systemctl restart nginx"
+  ],
+  "hint": "Use reload instead if the unit supports it."
+ },
+ {
+  "id": "t-systemctl-enable",
+  "deck": "term",
+  "category": "system",
+  "prompt": "Make nginx start at boot",
+  "answer": "systemctl enable nginx",
+  "accept": [
+   "systemctl enable nginx",
+   "sudo systemctl enable nginx"
+  ],
+  "hint": "enable is boot-time; start is now. --now does both."
+ },
+ {
+  "id": "t-systemctl-user",
+  "deck": "term",
+  "category": "system",
+  "prompt": "Restart the user-level waybar service",
+  "answer": "systemctl --user restart waybar",
+  "accept": [
+   "systemctl --user restart waybar"
+  ],
+  "hint": "--user targets your session's units, not the system's."
+ },
+ {
+  "id": "t-journalctl-u",
+  "deck": "term",
+  "category": "system",
+  "prompt": "Show the logs for the nginx unit",
+  "answer": "journalctl -u nginx",
+  "accept": [
+   "journalctl -u nginx"
+  ],
+  "hint": "-u filters to one unit."
+ },
+ {
+  "id": "t-journalctl-f",
+  "deck": "term",
+  "category": "system",
+  "prompt": "Follow the system journal live",
+  "answer": "journalctl -f",
+  "accept": [
+   "journalctl -f"
+  ],
+  "hint": "-f behaves like tail -f."
+ },
+ {
+  "id": "t-pacman-s",
+  "deck": "term",
+  "category": "system",
+  "prompt": "Install the ripgrep package",
+  "answer": "pacman -S ripgrep",
+  "accept": [
+   "pacman -S ripgrep",
+   "sudo pacman -S ripgrep"
+  ],
+  "hint": "-S syncs from the repos."
+ },
+ {
+  "id": "t-pacman-qs",
+  "deck": "term",
+  "category": "system",
+  "prompt": "Search the installed packages for ones matching python",
+  "answer": "pacman -Qs python",
+  "accept": [
+   "pacman -Qs python"
+  ],
+  "hint": "-Q queries local packages; -Ss searches the repos instead."
+ }
+]

@@ -1,0 +1,713 @@
+[
+ {
+  "id": "nv-w",
+  "deck": "nvim_motion",
+  "category": "motions",
+  "title": "Jump to the next word",
+  "hint": "w moves forward to the start of the next word.",
+  "start": [
+   "local value = compute(x)"
+  ],
+  "cursor": [
+   1,
+   1
+  ],
+  "solution": "w",
+  "goal": [
+   "local value = compute(x)"
+  ],
+  "goal_cursor": [
+   1,
+   7
+  ]
+ },
+ {
+  "id": "nv-b",
+  "deck": "nvim_motion",
+  "category": "motions",
+  "title": "Jump back a word",
+  "hint": "b moves backward to the start of the previous word.",
+  "start": [
+   "local value = compute(x)"
+  ],
+  "cursor": [
+   1,
+   14
+  ],
+  "solution": "b",
+  "goal": [
+   "local value = compute(x)"
+  ],
+  "goal_cursor": [
+   1,
+   13
+  ]
+ },
+ {
+  "id": "nv-e",
+  "deck": "nvim_motion",
+  "category": "motions",
+  "title": "Jump to end of word",
+  "hint": "e moves to the last character of the current word.",
+  "start": [
+   "local value = compute(x)"
+  ],
+  "cursor": [
+   1,
+   7
+  ],
+  "solution": "e",
+  "goal": [
+   "local value = compute(x)"
+  ],
+  "goal_cursor": [
+   1,
+   11
+  ]
+ },
+ {
+  "id": "nv-caret",
+  "deck": "nvim_motion",
+  "category": "motions",
+  "title": "First non-blank character",
+  "hint": "^ goes to the first non-whitespace character on the line.",
+  "start": [
+   "    indented line"
+  ],
+  "cursor": [
+   1,
+   12
+  ],
+  "solution": "^",
+  "goal": [
+   "    indented line"
+  ],
+  "goal_cursor": [
+   1,
+   5
+  ]
+ },
+ {
+  "id": "nv-dollar",
+  "deck": "nvim_motion",
+  "category": "motions",
+  "title": "End of the line",
+  "hint": "$ goes to the last character of the line.",
+  "start": [
+   "jump to the end"
+  ],
+  "cursor": [
+   1,
+   1
+  ],
+  "solution": "$",
+  "goal": [
+   "jump to the end"
+  ],
+  "goal_cursor": [
+   1,
+   15
+  ]
+ },
+ {
+  "id": "nv-zero",
+  "deck": "nvim_motion",
+  "category": "motions",
+  "title": "Start of the line",
+  "hint": "0 goes to column one, blanks included.",
+  "start": [
+   "    indented line"
+  ],
+  "cursor": [
+   1,
+   12
+  ],
+  "solution": "0",
+  "goal": [
+   "    indented line"
+  ],
+  "goal_cursor": [
+   1,
+   1
+  ]
+ },
+ {
+  "id": "nv-gg",
+  "deck": "nvim_motion",
+  "category": "motions",
+  "title": "Top of the file",
+  "hint": "gg jumps to the first line.",
+  "start": [
+   "first",
+   "second",
+   "third",
+   "fourth"
+  ],
+  "cursor": [
+   3,
+   1
+  ],
+  "solution": "gg",
+  "goal": [
+   "first",
+   "second",
+   "third",
+   "fourth"
+  ],
+  "goal_cursor": [
+   1,
+   1
+  ]
+ },
+ {
+  "id": "nv-G",
+  "deck": "nvim_motion",
+  "category": "motions",
+  "title": "Bottom of the file",
+  "hint": "G jumps to the last line.",
+  "start": [
+   "first",
+   "second",
+   "third",
+   "fourth"
+  ],
+  "cursor": [
+   1,
+   1
+  ],
+  "solution": "G",
+  "goal": [
+   "first",
+   "second",
+   "third",
+   "fourth"
+  ],
+  "goal_cursor": [
+   4,
+   1
+  ]
+ },
+ {
+  "id": "nv-fchar",
+  "deck": "nvim_motion",
+  "category": "motions",
+  "title": "Find a character",
+  "hint": "f{char} jumps forward to the next occurrence of that character.",
+  "start": [
+   "find the = sign here"
+  ],
+  "cursor": [
+   1,
+   1
+  ],
+  "solution": "f=",
+  "goal": [
+   "find the = sign here"
+  ],
+  "goal_cursor": [
+   1,
+   10
+  ]
+ },
+ {
+  "id": "nv-tchar",
+  "deck": "nvim_motion",
+  "category": "motions",
+  "title": "Jump up to a character",
+  "hint": "t{char} stops just before the character, unlike f.",
+  "start": [
+   "stop before the ; mark"
+  ],
+  "cursor": [
+   1,
+   1
+  ],
+  "solution": "t;",
+  "goal": [
+   "stop before the ; mark"
+  ],
+  "goal_cursor": [
+   1,
+   16
+  ]
+ },
+ {
+  "id": "nv-percent",
+  "deck": "nvim_motion",
+  "category": "motions",
+  "title": "Matching bracket",
+  "hint": "% jumps between a bracket and its partner.",
+  "start": [
+   "call(a, b, c)"
+  ],
+  "cursor": [
+   1,
+   5
+  ],
+  "solution": "%",
+  "goal": [
+   "call(a, b, c)"
+  ],
+  "goal_cursor": [
+   1,
+   13
+  ]
+ },
+ {
+  "id": "nv-brace",
+  "deck": "nvim_motion",
+  "category": "motions",
+  "title": "Next paragraph",
+  "hint": "} jumps to the next blank line.",
+  "start": [
+   "one",
+   "two",
+   "",
+   "four"
+  ],
+  "cursor": [
+   1,
+   1
+  ],
+  "solution": "}",
+  "goal": [
+   "one",
+   "two",
+   "",
+   "four"
+  ],
+  "goal_cursor": [
+   3,
+   1
+  ]
+ },
+ {
+  "id": "nv-dw",
+  "deck": "nvim_motion",
+  "category": "operators",
+  "title": "Delete a word forward",
+  "hint": "dw deletes from the cursor to the start of the next word.",
+  "start": [
+   "local foo = bar_value"
+  ],
+  "cursor": [
+   1,
+   13
+  ],
+  "solution": "dw",
+  "goal": [
+   "local foo = "
+  ]
+ },
+ {
+  "id": "nv-de",
+  "deck": "nvim_motion",
+  "category": "operators",
+  "title": "Delete to end of word",
+  "hint": "de deletes to the end of the word, leaving the space.",
+  "start": [
+   "local foo = bar_value"
+  ],
+  "cursor": [
+   1,
+   13
+  ],
+  "solution": "de",
+  "goal": [
+   "local foo = "
+  ]
+ },
+ {
+  "id": "nv-ddollar",
+  "deck": "nvim_motion",
+  "category": "operators",
+  "title": "Delete to end of line",
+  "hint": "d$ deletes from the cursor through the end of the line.",
+  "start": [
+   "keep this: drop all of this"
+  ],
+  "cursor": [
+   1,
+   12
+  ],
+  "solution": "d$",
+  "goal": [
+   "keep this: "
+  ]
+ },
+ {
+  "id": "nv-dd",
+  "deck": "nvim_motion",
+  "category": "operators",
+  "title": "Delete a whole line",
+  "hint": "dd deletes the line the cursor is on.",
+  "start": [
+   "keep",
+   "delete me",
+   "keep too"
+  ],
+  "cursor": [
+   2,
+   1
+  ],
+  "solution": "dd",
+  "goal": [
+   "keep",
+   "keep too"
+  ]
+ },
+ {
+  "id": "nv-3dd",
+  "deck": "nvim_motion",
+  "category": "operators",
+  "title": "Delete three lines",
+  "hint": "A count before an operator repeats it. 3dd deletes three lines.",
+  "start": [
+   "one",
+   "two",
+   "three",
+   "four"
+  ],
+  "cursor": [
+   1,
+   1
+  ],
+  "solution": "3dd",
+  "goal": [
+   "four"
+  ]
+ },
+ {
+  "id": "nv-cc",
+  "deck": "nvim_motion",
+  "category": "operators",
+  "title": "Replace a whole line",
+  "hint": "cc clears the line and drops you into insert mode.",
+  "start": [
+   "old content here",
+   "next line"
+  ],
+  "cursor": [
+   1,
+   1
+  ],
+  "solution": "ccnew\u001b",
+  "goal": [
+   "new",
+   "next line"
+  ]
+ },
+ {
+  "id": "nv-yyp",
+  "deck": "nvim_motion",
+  "category": "operators",
+  "title": "Duplicate a line",
+  "hint": "yy yanks the line, p puts it below.",
+  "start": [
+   "duplicate me"
+  ],
+  "cursor": [
+   1,
+   1
+  ],
+  "solution": "yyp",
+  "goal": [
+   "duplicate me",
+   "duplicate me"
+  ]
+ },
+ {
+  "id": "nv-indent",
+  "deck": "nvim_motion",
+  "category": "operators",
+  "title": "Indent a line",
+  "hint": ">> shifts the line one shiftwidth to the right.",
+  "start": [
+   "needs indent"
+  ],
+  "cursor": [
+   1,
+   1
+  ],
+  "solution": ">>",
+  "goal": [
+   "  needs indent"
+  ]
+ },
+ {
+  "id": "nv-diw",
+  "deck": "nvim_motion",
+  "category": "textobj",
+  "title": "Delete the word under the cursor",
+  "hint": "diw deletes the inner word wherever you are inside it.",
+  "start": [
+   "local foo = bar"
+  ],
+  "cursor": [
+   1,
+   8
+  ],
+  "solution": "diw",
+  "goal": [
+   "local  = bar"
+  ]
+ },
+ {
+  "id": "nv-daw",
+  "deck": "nvim_motion",
+  "category": "textobj",
+  "title": "Delete a word and its space",
+  "hint": "daw takes the surrounding whitespace too.",
+  "start": [
+   "local foo = bar"
+  ],
+  "cursor": [
+   1,
+   8
+  ],
+  "solution": "daw",
+  "goal": [
+   "local = bar"
+  ]
+ },
+ {
+  "id": "nv-ciw",
+  "deck": "nvim_motion",
+  "category": "textobj",
+  "title": "Change the word under the cursor",
+  "hint": "ciw replaces the whole word no matter where the cursor sits in it.",
+  "start": [
+   "local foo = bar"
+  ],
+  "cursor": [
+   1,
+   8
+  ],
+  "solution": "ciwname\u001b",
+  "goal": [
+   "local name = bar"
+  ]
+ },
+ {
+  "id": "nv-ciquote",
+  "deck": "nvim_motion",
+  "category": "textobj",
+  "title": "Change inside quotes",
+  "hint": "ci\" replaces everything between the quotes.",
+  "start": [
+   "msg = \"hello world\""
+  ],
+  "cursor": [
+   1,
+   10
+  ],
+  "solution": "ci\"hi\u001b",
+  "goal": [
+   "msg = \"hi\""
+  ]
+ },
+ {
+  "id": "nv-ciparen",
+  "deck": "nvim_motion",
+  "category": "textobj",
+  "title": "Change inside parentheses",
+  "hint": "ci( replaces the arguments, keeping the parens.",
+  "start": [
+   "call(old, args)"
+  ],
+  "cursor": [
+   1,
+   7
+  ],
+  "solution": "ci(new\u001b",
+  "goal": [
+   "call(new)"
+  ]
+ },
+ {
+  "id": "nv-daparen",
+  "deck": "nvim_motion",
+  "category": "textobj",
+  "title": "Delete parens and contents",
+  "hint": "da( removes the brackets along with what is inside.",
+  "start": [
+   "call(a, b) end"
+  ],
+  "cursor": [
+   1,
+   6
+  ],
+  "solution": "da(",
+  "goal": [
+   "call end"
+  ]
+ },
+ {
+  "id": "nv-dip",
+  "deck": "nvim_motion",
+  "category": "textobj",
+  "title": "Delete a paragraph",
+  "hint": "dip deletes the block of lines around the cursor.",
+  "start": [
+   "one",
+   "two",
+   "",
+   "four"
+  ],
+  "cursor": [
+   1,
+   1
+  ],
+  "solution": "dip",
+  "goal": [
+   "",
+   "four"
+  ]
+ },
+ {
+  "id": "nv-x",
+  "deck": "nvim_motion",
+  "category": "editing",
+  "title": "Delete one character",
+  "hint": "x removes the character under the cursor.",
+  "start": [
+   "typoo here"
+  ],
+  "cursor": [
+   1,
+   5
+  ],
+  "solution": "x",
+  "goal": [
+   "typo here"
+  ]
+ },
+ {
+  "id": "nv-rchar",
+  "deck": "nvim_motion",
+  "category": "editing",
+  "title": "Replace one character",
+  "hint": "r{char} swaps a single character without entering insert mode.",
+  "start": [
+   "cat"
+  ],
+  "cursor": [
+   1,
+   1
+  ],
+  "solution": "rb",
+  "goal": [
+   "bat"
+  ]
+ },
+ {
+  "id": "nv-A",
+  "deck": "nvim_motion",
+  "category": "editing",
+  "title": "Append at end of line",
+  "hint": "A jumps to the end of the line and starts insert mode.",
+  "start": [
+   "missing semicolon"
+  ],
+  "cursor": [
+   1,
+   1
+  ],
+  "solution": "A;\u001b",
+  "goal": [
+   "missing semicolon;"
+  ]
+ },
+ {
+  "id": "nv-I",
+  "deck": "nvim_motion",
+  "category": "editing",
+  "title": "Insert at start of line",
+  "hint": "I jumps to the first non-blank and starts insert mode.",
+  "start": [
+   "    indented"
+  ],
+  "cursor": [
+   1,
+   8
+  ],
+  "solution": "I-- \u001b",
+  "goal": [
+   "    -- indented"
+  ]
+ },
+ {
+  "id": "nv-o",
+  "deck": "nvim_motion",
+  "category": "editing",
+  "title": "Open a line below",
+  "hint": "o creates a new line underneath and starts insert mode.",
+  "start": [
+   "first line"
+  ],
+  "cursor": [
+   1,
+   1
+  ],
+  "solution": "osecond line\u001b",
+  "goal": [
+   "first line",
+   "second line"
+  ]
+ },
+ {
+  "id": "nv-J",
+  "deck": "nvim_motion",
+  "category": "editing",
+  "title": "Join two lines",
+  "hint": "J pulls the next line up onto this one.",
+  "start": [
+   "join these",
+   "two lines"
+  ],
+  "cursor": [
+   1,
+   1
+  ],
+  "solution": "J",
+  "goal": [
+   "join these two lines"
+  ]
+ },
+ {
+  "id": "nv-gUiw",
+  "deck": "nvim_motion",
+  "category": "editing",
+  "title": "Uppercase a word",
+  "hint": "gUiw upper-cases the word under the cursor.",
+  "start": [
+   "make this loud"
+  ],
+  "cursor": [
+   1,
+   6
+  ],
+  "solution": "gUiw",
+  "goal": [
+   "make THIS loud"
+  ]
+ },
+ {
+  "id": "nv-tilde",
+  "deck": "nvim_motion",
+  "category": "editing",
+  "title": "Toggle character case",
+  "hint": "~ flips the case of the character under the cursor.",
+  "start": [
+   "abc"
+  ],
+  "cursor": [
+   1,
+   1
+  ],
+  "solution": "~",
+  "goal": [
+   "Abc"
+  ]
+ }
+]

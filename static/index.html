@@ -1,0 +1,637 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>keydrill</title>
+<style>
+  :root {
+    --bg:#0e1116; --panel:#161b22; --line:#262d38; --sunk:#0b0e13;
+    --fg:#e6edf3; --dim:#8b949e; --accent:#58a6ff;
+    --ok:#3fb950; --bad:#f85149; --warn:#d29922; --learn:#bc8cff;
+    --mono:"JetBrains Mono","Fira Code",ui-monospace,monospace;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg);
+         font-family:var(--mono); font-size:15px; line-height:1.5; }
+  header { display:flex; align-items:center; gap:18px; padding:13px 22px;
+           border-bottom:1px solid var(--line); background:var(--panel);
+           position:sticky; top:0; z-index:10; }
+  header h1 { font-size:15px; margin:0; letter-spacing:.5px; }
+  header h1 span { color:var(--accent); }
+  nav { display:flex; gap:6px; margin-left:auto; }
+  button { font-family:var(--mono); font-size:13px; cursor:pointer;
+           background:transparent; color:var(--dim); border:1px solid var(--line);
+           border-radius:6px; padding:6px 12px; }
+  button:hover { color:var(--fg); border-color:var(--dim); }
+  button.on { color:var(--bg); background:var(--accent); border-color:var(--accent); }
+  button.primary { color:var(--bg); background:var(--ok); border-color:var(--ok);
+                   font-weight:600; }
+  button.danger { color:var(--bad); border-color:var(--bad); }
+  main { max-width:940px; margin:0 auto; padding:24px 22px 70px; }
+  .view { display:none; } .view.on { display:block; }
+  .muted { color:var(--dim); font-size:13px; }
+  .chips { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
+  .chips.sub button { font-size:12px; padding:4px 9px; }
+  .bar { height:3px; background:var(--sunk); border-radius:2px; overflow:hidden;
+         margin-top:5px; }
+  .bar i { display:block; height:100%; background:var(--learn); }
+
+  #banner { display:none; align-items:center; gap:12px; background:#2d2200;
+            border:1px solid var(--warn); color:var(--warn); padding:9px 15px;
+            border-radius:8px; margin-bottom:16px; font-size:13px; }
+  #banner.on { display:flex; }
+  .dot { width:8px; height:8px; border-radius:50%; background:var(--warn);
+         animation:pulse 1.2s infinite; flex:none; }
+  @keyframes pulse { 50% { opacity:.25; } }
+
+  .card { background:var(--panel); border:1px solid var(--line);
+          border-radius:10px; padding:24px; margin-bottom:16px; }
+  .tag { color:var(--dim); font-size:11px; text-transform:uppercase;
+         letter-spacing:1px; margin-bottom:9px; }
+  .tag b { color:var(--learn); }
+  .prompt { font-size:27px; font-weight:600; line-height:1.25; }
+  .hint { color:var(--dim); font-size:13px; margin-top:10px; }
+  .reveal { margin-top:18px; padding:14px 16px; background:var(--sunk);
+            border:1px solid var(--line); border-left:3px solid var(--learn);
+            border-radius:6px; }
+  .reveal .tag { margin-bottom:6px; }
+  .answer { font-size:22px; letter-spacing:.5px; }
+  kbd { display:inline-block; background:#21262d; border:1px solid var(--line);
+        border-bottom-width:2px; border-radius:5px; padding:2px 8px;
+        margin-right:4px; font-size:16px; }
+  .chord { margin-top:18px; min-height:36px; font-size:20px; }
+  .verdict { margin-top:14px; font-size:14px; min-height:22px; }
+  .verdict.ok { color:var(--ok); } .verdict.bad { color:var(--bad); }
+  input[type=text] { width:100%; font-family:var(--mono); font-size:19px;
+        background:var(--sunk); color:var(--fg); border:1px solid var(--line);
+        border-radius:7px; padding:11px 14px; margin-top:18px; }
+  input[type=text]:focus { outline:none; border-color:var(--accent); }
+
+  .buf { background:var(--sunk); border:1px solid var(--line); border-radius:7px;
+         padding:12px 14px; font-size:16px; white-space:pre; overflow-x:auto;
+         margin-top:8px; line-height:1.7; }
+  .buf u { text-decoration:none; background:var(--accent); color:var(--bg); }
+  .buf.goal { border-left:3px solid var(--ok); }
+  .two { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:700px) { .two { grid-template-columns:1fr; } }
+  .keycap { margin-top:16px; background:var(--sunk); border:1px dashed var(--line);
+            border-radius:7px; padding:14px; min-height:54px; font-size:20px;
+            cursor:text; }
+  .keycap.live { border-color:var(--accent); border-style:solid; }
+  .keycap em { font-style:normal; color:var(--accent); }
+
+  .row { display:flex; gap:24px; flex-wrap:wrap; margin-top:20px; }
+  .stat b { display:block; font-size:23px; font-weight:600; }
+  .stat span { color:var(--dim); font-size:11px; text-transform:uppercase;
+               letter-spacing:.8px; }
+
+  #text { font-size:19px; line-height:2; white-space:pre-wrap; word-break:break-all; }
+  #text i { font-style:normal; color:var(--dim); }
+  #text i.done { color:var(--fg); }
+  #text i.bad { color:var(--bad); background:rgba(248,81,73,.16); border-radius:3px; }
+  #text i.at { background:var(--accent); color:var(--bg); border-radius:3px; }
+
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th,td { text-align:left; padding:6px 9px; border-bottom:1px solid var(--line); }
+  th { color:var(--dim); font-weight:500; font-size:11px; text-transform:uppercase;
+       letter-spacing:.8px; }
+  td.num { text-align:right; font-variant-numeric:tabular-nums; }
+  h2 { font-size:12px; text-transform:uppercase; letter-spacing:1px;
+       color:var(--dim); margin:24px 0 8px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>key<span>drill</span></h1>
+  <nav>
+    <button id="nav-learn" class="on">learn</button>
+    <button id="nav-drill">drill</button>
+    <button id="nav-typing">typing</button>
+    <button id="nav-stats">stats</button>
+  </nav>
+</header>
+
+<main>
+  <div id="banner">
+    <div class="dot"></div>
+    <div><b>Submap active.</b> Hyprland is not acting on your chords.
+      Press <kbd>ESC</kbd> any time to get your desktop back.</div>
+  </div>
+
+  <section id="view-learn" class="view on">
+    <div class="chips" id="learn-decks"></div>
+    <div class="chips sub" id="learn-cats"></div>
+    <div id="learn-card"></div>
+  </section>
+
+  <section id="view-drill" class="view">
+    <div class="chips" id="drill-decks"></div>
+    <div class="chips sub" id="drill-cats"></div>
+    <div id="drill-card"></div>
+  </section>
+
+  <section id="view-typing" class="view">
+    <div class="chips">
+      <button class="src on" data-src="symbols">symbols</button>
+      <button class="src" data-src="lua">lua</button>
+      <button class="src" data-src="shell">shell</button>
+      <button class="src" data-src="prose">prose</button>
+    </div>
+    <div class="card"><div id="text">Loading…</div></div>
+    <div class="row">
+      <div class="stat"><b id="ty-wpm">0</b><span>wpm</span></div>
+      <div class="stat"><b id="ty-acc">100%</b><span>accuracy</span></div>
+      <div class="stat"><b id="ty-err">0</b><span>errors</span></div>
+      <div class="stat"><b id="ty-left">0</b><span>chars left</span></div>
+    </div>
+    <p style="margin-top:18px">
+      <button id="ty-new">New text</button>
+      <span class="muted" id="ty-weak"></span>
+    </p>
+  </section>
+
+  <section id="view-stats" class="view">
+    <div class="row">
+      <div class="stat"><b id="st-total">0</b><span>attempts</span></div>
+      <div class="stat"><b id="st-rate">-</b><span>accuracy</span></div>
+      <div class="stat"><b id="st-learned">0</b><span>items learned</span></div>
+      <div class="stat"><b id="st-wpm">-</b><span>best wpm</span></div>
+    </div>
+    <h2>By deck</h2><table id="st-decks"></table>
+    <h2>Needs work</h2><table id="st-worst"></table>
+    <h2>Keys you miss most</h2><table id="st-keys"></table>
+    <h2>Recent typing runs</h2><table id="st-runs"></table>
+  </section>
+</main>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const api = (p,o) => fetch(p,o).then(r => r.json());
+const post = (p,d) => api(p,{method:'POST',headers:{'Content-Type':'application/json'},
+                            body:JSON.stringify(d||{})});
+
+/* ---------- browser key -> Hyprland keysym ---------- */
+const CODE_MAP = {
+  Enter:'RETURN', NumpadEnter:'RETURN', Escape:'ESCAPE', Space:'SPACE',
+  Tab:'TAB', Backspace:'BACKSPACE', Delete:'DELETE', Insert:'INSERT',
+  Home:'HOME', End:'END', PageUp:'PRIOR', PageDown:'NEXT',
+  ArrowLeft:'LEFT', ArrowRight:'RIGHT', ArrowUp:'UP', ArrowDown:'DOWN',
+  Minus:'MINUS', Equal:'EQUAL', BracketLeft:'BRACKETLEFT',
+  BracketRight:'BRACKETRIGHT', Backslash:'BACKSLASH', Semicolon:'SEMICOLON',
+  Quote:'APOSTROPHE', Comma:'COMMA', Period:'PERIOD', Slash:'SLASH',
+  Backquote:'GRAVE', PrintScreen:'PRINT', CapsLock:'CAPS_LOCK'
+};
+function hyprKey(e){
+  const c = e.code;
+  if (/^Key[A-Z]$/.test(c)) return c.slice(3);
+  if (/^Digit[0-9]$/.test(c)) return c.slice(5);
+  if (/^F\d{1,2}$/.test(c)) return c;
+  return CODE_MAP[c] || c.toUpperCase();
+}
+function hyprMods(e){
+  const m=[]; if(e.metaKey)m.push('SUPER'); if(e.ctrlKey)m.push('CTRL');
+  if(e.altKey)m.push('ALT'); if(e.shiftKey)m.push('SHIFT'); return m;
+}
+const MOD_ONLY = new Set(['ShiftLeft','ShiftRight','ControlLeft','ControlRight',
+  'AltLeft','AltRight','MetaLeft','MetaRight','CapsLock']);
+
+/* ---------- raw key sequence capture (nvim motions) ---------- */
+function seqShow(s){
+  return esc(s).replace(/\x1b/g,'<em>&lt;Esc&gt;</em>')
+               .replace(/\r/g,'<em>&lt;CR&gt;</em>')
+               .replace(/\t/g,'<em>&lt;Tab&gt;</em>');
+}
+function seqFromEvent(e){
+  if (e.key === 'Escape') return '\x1b';
+  if (e.key === 'Enter')  return '\r';
+  if (e.key === 'Tab')    return '\t';
+  if (e.key.length === 1) return e.key;
+  return '';
+}
+
+/* ================= shared learn/drill session ================= */
+class Session {
+  constructor(mode){
+    this.mode = mode;                 // 'learn' | 'drill'
+    this.deck = null; this.cat = 'all';
+    this.item = null; this.meta = {}; this.shownAt = 0;
+    this.seq = ''; this.locked = false;
+    this.submap = false; this.beat = null;
+    this.hits = 0; this.total = 0;
+  }
+  get root(){ return $('#'+this.mode+'-card'); }
+
+  async init(decksData){
+    const wrap = $('#'+this.mode+'-decks');
+    wrap.innerHTML = '';
+    decksData.forEach(d => {
+      const b = document.createElement('button');
+      b.textContent = d.label + '  ' + (this.mode==='learn'
+        ? d.learned+'/'+d.total : d.total);
+      b.onclick = () => this.pickDeck(d);
+      b.dataset.deck = d.deck;
+      wrap.appendChild(b);
+    });
+    this.decksData = decksData;
+    if (decksData.length) this.pickDeck(decksData[0]);
+  }
+
+  pickDeck(d){
+    this.deckData = d; this.deck = d.deck; this.cat = 'all';
+    document.querySelectorAll('#'+this.mode+'-decks button')
+      .forEach(b => b.classList.toggle('on', b.dataset.deck === d.deck));
+    const cw = $('#'+this.mode+'-cats');
+    cw.innerHTML = '';
+    const mk = (name,label,extra) => {
+      const b = document.createElement('button');
+      b.textContent = label + (extra||'');
+      b.dataset.cat = name;
+      b.onclick = () => { this.cat = name; this.markCats(); this.next(); };
+      cw.appendChild(b);
+    };
+    mk('all','all');
+    d.categories.forEach(c => mk(c.name, c.name,
+      this.mode==='learn' ? '  '+c.learned+'/'+c.total : '  '+c.total));
+    this.markCats();
+    this.ensureSubmap().then(() => this.next());
+  }
+  markCats(){
+    document.querySelectorAll('#'+this.mode+'-cats button')
+      .forEach(b => b.classList.toggle('on', b.dataset.cat === this.cat));
+  }
+
+  /* --- submap is only needed for chord decks --- */
+  async ensureSubmap(){
+    const want = this.deckData && this.deckData.input === 'chord'
+                 && ACTIVE === this.mode;
+    if (want && !this.submap) {
+      const r = await post('/api/submap/enter');
+      if (!r.ok) { this.submap = false; return; }
+      this.submap = true; $('#banner').classList.add('on');
+      this.beat = setInterval(async () => {
+        const h = await post('/api/heartbeat');
+        if (h.exited || !h.active) this.dropSubmap(true);
+      }, 1000);
+    } else if (!want && this.submap) {
+      await this.dropSubmap(false);
+    }
+  }
+  async dropSubmap(byEscape){
+    if (!this.submap) return;
+    this.submap = false; clearInterval(this.beat);
+    if (!byEscape) await post('/api/submap/exit');
+    $('#banner').classList.remove('on');
+    if (byEscape) this.render(true);
+  }
+
+  async next(){
+    this.locked = false; this.seq = '';
+    const q = 'deck='+encodeURIComponent(this.deck)
+            + '&category='+encodeURIComponent(this.cat);
+    const ex = encodeURIComponent(this.item ? this.item.id : '');
+    const url = this.mode === 'learn'
+      ? '/api/learn/next?'+q+'&exclude='+(this.skipping ? ex : '')
+      : '/api/drill/next?'+q+'&exclude='+ex;
+    this.skipping = false;
+    const r = await api(url);
+    this.item = r.item; this.meta = r.meta || {};
+    this.shownAt = performance.now();
+    this.render();
+    const inp = this.root.querySelector('input[type=text]');
+    if (inp) inp.focus();
+  }
+
+  render(escNote){
+    const it = this.item, m = this.meta;
+    if (!it) {
+      this.root.innerHTML = '<div class="card"><div class="prompt">'
+        + (m.done ? 'Every item here is learned. Switch to drill to keep them sharp.'
+                  : 'Nothing to show.') + '</div></div>';
+      return;
+    }
+    const stage = this.mode === 'learn' ? (m.stage || 1) : 2;
+    const guided = stage <= 1;
+
+    let head = '<div class="tag">';
+    head += this.mode === 'learn'
+      ? '<b>' + (guided ? 'Learn - follow along' : 'Recall') + '</b> &nbsp; '
+        + (m.learned||0) + '/' + (m.total||0) + ' learned'
+      : 'Drill &nbsp; ' + this.hits + '/' + this.total;
+    head += ' &nbsp; ' + esc(it.category) + '</div>';
+
+    let body = '<div class="prompt">' + esc(it.prompt) + '</div>';
+    if (it.hint) body += '<div class="hint">' + esc(it.hint) + '</div>';
+
+    if (guided) {
+      body += '<div class="reveal"><div class="tag">Answer</div>'
+            + '<div class="answer">' + this.fmtAnswer(it) + '</div></div>';
+    }
+
+    if (it.input === 'chord') {
+      // Without a placeholder a recall card is just a prompt and blank space,
+      // with nothing showing that a keypress is what's wanted.
+      body += '<div class="chord" id="s-chord"><span class="muted">'
+            + 'waiting for a chord\u2026</span></div>';
+      if (!this.submap) body += '<div class="verdict bad">Submap inactive - '
+        + 'chords will not be captured. Is Hyprland reachable?</div>';
+    } else if (it.input === 'text') {
+      body += '<input type="text" id="s-input" autocomplete="off" '
+            + 'spellcheck="false" placeholder="type it, then Enter">';
+    } else if (it.input === 'nvim') {
+      body += '<div class="two">'
+            + '<div><div class="tag">Buffer</div><div class="buf">'
+            + this.fmtBuf(it.start, it.cursor) + '</div></div>'
+            + '<div><div class="tag">Make it look like</div>'
+            + '<div class="buf goal">' + esc(it.goal.join('\n')) + '</div></div>'
+            + '</div>'
+            + '<div class="keycap" id="s-keys" tabindex="0">'
+            + '<span class="muted">click here, then type the motion &middot; '
+            + 'Ctrl+Enter runs it &middot; Ctrl+Backspace clears</span></div>';
+    }
+
+    body += '<div class="verdict" id="s-verdict">'
+          + (escNote ? 'Left via ESC - desktop back to normal.' : '') + '</div>';
+    this.root.innerHTML = '<div class="card">' + head + body + '</div>'
+      + '<button id="s-skip">Skip</button> '
+      + (this.mode==='learn' && !guided
+          ? '<button id="s-reveal">Show answer</button> ' : '')
+      + (this.mode==='learn' ? '<button id="s-know">I know this already</button>' : '');
+
+    const skip = this.root.querySelector('#s-skip');
+    if (skip) skip.onclick = async () => {
+      if (this.mode === 'learn' && this.item) {
+        this.skipping = true;
+        await post('/api/learn/skip', {item_id: this.item.id});
+      }
+      this.next();
+    };
+    const rev = this.root.querySelector('#s-reveal');
+    if (rev) rev.onclick = async () => {
+      // Peeking is not knowing it - drop back to the guided stage so it comes
+      // round again rather than quietly counting as learned.
+      await post('/api/attempt', {item_id:this.item.id, correct:false,
+                                  latency_ms:0, mode:'learn'});
+      this.meta.stage = 1;
+      this.render();
+      this.setVerdict(false, 'Revealed - this one will come back.');
+    };
+    const know = this.root.querySelector('#s-know');
+    if (know) know.onclick = () => this.grade(true, {silent:true});
+
+    const inp = this.root.querySelector('#s-input');
+    if (inp) inp.onkeydown = e => {
+      if (e.key === 'Enter') { e.preventDefault(); this.submitText(inp.value); }
+    };
+    const kc = this.root.querySelector('#s-keys');
+    if (kc) {
+      kc.onfocus = () => kc.classList.add('live');
+      kc.onblur  = () => kc.classList.remove('live');
+      kc.focus();
+    }
+  }
+
+  fmtAnswer(it){
+    const all = (it.answers && it.answers.length) ? it.answers : [it.answer];
+    const one = a => it.input === 'chord'
+      ? a.split('+').map(k=>'<kbd>'+esc(k.trim())+'</kbd>').join('')
+      : '<code>' + seqShow(a) + '</code>';
+    return all.map(one).join('<span class="muted"> or </span>');
+  }
+  fmtBuf(lines, cur){
+    return lines.map((l,i) => {
+      if (!cur || i !== cur[0]-1) return esc(l);
+      const c = cur[1]-1;
+      const ch = l[c] === undefined ? ' ' : l[c];
+      return esc(l.slice(0,c)) + '<u>' + esc(ch) + '</u>' + esc(l.slice(c+1));
+    }).join('\n');
+  }
+
+  /* --- input handlers --- */
+  onKey(e){
+    if (!this.item || this.locked) return;
+    if (this.item.input === 'chord') {
+      if (!this.submap || MOD_ONLY.has(e.code)) return;
+      e.preventDefault();
+      const got = hyprMods(e).concat([hyprKey(e)]);
+      const el = this.root.querySelector('#s-chord');
+      if (el) el.innerHTML = got.map(k=>'<kbd>'+esc(k)+'</kbd>').join('');
+      this.submitText(got.join(' + '));
+      return;
+    }
+    if (this.item.input === 'nvim') {
+      const kc = this.root.querySelector('#s-keys');
+      if (!kc || document.activeElement !== kc) return;
+      if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); return this.submitNvim(); }
+      if (e.ctrlKey && e.key === 'Backspace') {
+        e.preventDefault(); this.seq=''; kc.innerHTML='<span class="muted">cleared</span>';
+        return;
+      }
+      const c = seqFromEvent(e);
+      if (!c) return;
+      e.preventDefault();
+      this.seq += c;
+      kc.innerHTML = seqShow(this.seq);
+    }
+  }
+
+  async submitText(val){
+    if (this.locked || !String(val).trim()) return;
+    const r = await post('/api/check', {item_id:this.item.id, given:val});
+    this.grade(r.correct, {got:val, answer:r.answer});
+  }
+  async submitNvim(){
+    if (this.locked || !this.seq) return;
+    this.locked = true;
+    const r = await post('/api/nvim/check', {item_id:this.item.id, keys:this.seq});
+    this.locked = false;
+    if (r.error) {
+      this.setVerdict(false, 'nvim: ' + r.error);
+      return;
+    }
+    this.grade(r.correct, {got:seqShow(this.seq), lines:r.lines, answer:r.answer});
+  }
+
+  setVerdict(ok, html){
+    const v = this.root.querySelector('#s-verdict');
+    if (v) { v.className = 'verdict ' + (ok?'ok':'bad'); v.innerHTML = html; }
+  }
+
+  async grade(correct, extra){
+    if (this.locked) return;
+    this.locked = true;
+    extra = extra || {};
+    const latency = Math.round(performance.now() - this.shownAt);
+    this.total++; if (correct) this.hits++;
+
+    const stage = this.mode==='learn' ? (this.meta.stage||1) : 2;
+    let msg;
+    if (extra.silent) msg = 'Marked as known.';
+    else if (correct) msg = 'Correct' + (this.mode==='drill' ? ' - '+latency+'ms' : '')
+                            + (stage<=1 ? ' - now recall it from memory.' : '');
+    else {
+      msg = 'Not quite.';
+      if (extra.got) msg += ' You gave <code>'+esc(extra.got)+'</code>.';
+      if (extra.answer) msg += ' Wanted <code>'+seqShow(extra.answer)+'</code>.';
+      if (extra.lines) msg += '<div class="buf" style="margin-top:8px">'
+        + esc(extra.lines.join('\n')) + '</div>';
+    }
+    this.setVerdict(correct, msg);
+
+    const r = await post('/api/attempt', {
+      item_id:this.item.id, correct:correct, latency_ms:latency, mode:this.mode
+    });
+    if (this.mode === 'learn' && r.learn) this.meta.stage = r.learn.stage;
+
+    setTimeout(() => {
+      if (this.mode === 'learn' && !correct && stage > 1) {
+        this.meta.stage = 1; this.locked=false; this.seq=''; this.render();
+      } else {
+        this.refreshCounts(); this.next();
+      }
+    }, correct ? 750 : 2200);
+  }
+
+  async refreshCounts(){
+    if (this.mode !== 'learn') return;
+    const d = await api('/api/decks');
+    this.decksData = d.decks;
+    const cur = d.decks.find(x => x.deck === this.deck);
+    if (!cur) return;
+    this.deckData = cur;
+    document.querySelectorAll('#learn-decks button').forEach(b => {
+      const dd = d.decks.find(x => x.deck === b.dataset.deck);
+      if (dd) b.textContent = dd.label+'  '+dd.learned+'/'+dd.total;
+    });
+    document.querySelectorAll('#learn-cats button').forEach(b => {
+      if (b.dataset.cat === 'all') return;
+      const c = cur.categories.find(x => x.name === b.dataset.cat);
+      if (c) b.textContent = c.name+'  '+c.learned+'/'+c.total;
+    });
+  }
+}
+
+const LEARN = new Session('learn');
+const DRILL = new Session('drill');
+let ACTIVE = 'learn';
+
+/* ================= typing ================= */
+const TY = {
+  text:'', pos:0, errors:0, typed:0, startedAt:0, keys:{}, source:'symbols',
+  wrong:new Set(),
+  async load(){
+    const r = await api('/api/drill?source='+this.source);
+    Object.assign(this,{text:r.text,pos:0,errors:0,typed:0,startedAt:0,keys:{}});
+    this.wrong.clear();
+    $('#ty-weak').textContent = r.weak_keys && r.weak_keys.length
+      ? '  weighted toward: '+r.weak_keys.join(' ') : '';
+    this.render(); this.update();
+  },
+  render(){
+    let out='';
+    for (let i=0;i<this.text.length;i++){
+      let cls = i<this.pos ? (this.wrong.has(i)?'bad':'done') : (i===this.pos?'at':'');
+      const ch = this.text[i]==='\n' ? '↵\n' : this.text[i];
+      out += '<i class="'+cls+'">'+esc(ch)+'</i>';
+    }
+    $('#text').innerHTML = out;
+  },
+  update(){
+    const secs = this.startedAt ? (performance.now()-this.startedAt)/1000 : 0;
+    const wpm = secs>0.5 ? Math.round((this.pos/5)/(secs/60)) : 0;
+    const acc = this.typed ? Math.round(100*(this.typed-this.errors)/this.typed) : 100;
+    $('#ty-wpm').textContent=wpm; $('#ty-acc').textContent=acc+'%';
+    $('#ty-err').textContent=this.errors; $('#ty-left').textContent=this.text.length-this.pos;
+    return {wpm,acc,secs};
+  },
+  key(e){
+    if (e.ctrlKey||e.metaKey||e.altKey) return;
+    let ch=null;
+    if (e.key==='Enter') ch='\n';
+    else if (e.key==='Backspace'){ e.preventDefault();
+      if(this.pos>0){this.pos--;this.wrong.delete(this.pos);this.render();this.update();} return; }
+    else if (e.key.length===1) ch=e.key;
+    if (ch===null) return;
+    e.preventDefault();
+    if (this.pos>=this.text.length) return;
+    if (!this.startedAt) this.startedAt=performance.now();
+    const want=this.text[this.pos], ok=ch===want;
+    this.typed++;
+    const slot=this.keys[want]||(this.keys[want]={hits:0,misses:0});
+    if(ok) slot.hits++; else {slot.misses++;this.errors++;this.wrong.add(this.pos);}
+    this.pos++; this.render();
+    const s=this.update();
+    if (this.pos>=this.text.length) {
+      post('/api/typing',{source:this.source,wpm:s.wpm,accuracy:s.acc,
+        chars:this.text.length,seconds:s.secs,keys:this.keys});
+      setTimeout(()=>this.load(),900);
+    }
+  }
+};
+$('#ty-new').onclick = () => TY.load();
+document.querySelectorAll('.src').forEach(b => b.onclick = () => {
+  document.querySelectorAll('.src').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); TY.source=b.dataset.src; TY.load();
+});
+
+/* ================= stats ================= */
+async function loadStats(){
+  const s = await api('/api/stats');
+  $('#st-total').textContent = s.total;
+  $('#st-rate').textContent = s.total ? Math.round(100*s.correct/s.total)+'%' : '-';
+  $('#st-learned').textContent = Object.values(s.learned||{}).reduce((a,b)=>a+b,0);
+  const best = s.recent_runs.reduce((m,r)=>Math.max(m,r.wpm),0);
+  $('#st-wpm').textContent = best ? Math.round(best) : '-';
+
+  const rows = (head, body) => head + (body || '<tr><td colspan="6" class="muted">Nothing yet.</td></tr>');
+  $('#st-decks').innerHTML = rows(
+    '<tr><th>deck</th><th class="num">tries</th><th class="num">right</th><th class="num">avg</th><th class="num">learned</th></tr>',
+    s.per_deck.map(r=>`<tr><td>${r.deck}</td><td class="num">${r.n}</td>`
+      +`<td class="num">${r.ok}</td><td class="num">${Math.round(r.avg_ms)}ms</td>`
+      +`<td class="num">${(s.learned||{})[r.deck]||0}</td></tr>`).join(''));
+  $('#st-worst').innerHTML = rows(
+    '<tr><th>prompt</th><th>answer</th><th class="num">tries</th><th class="num">right</th></tr>',
+    s.worst.map(r=>`<tr><td>${esc(r.prompt)}</td><td><code>${esc(r.answer)}</code></td>`
+      +`<td class="num">${r.n}</td><td class="num">${r.ok}</td></tr>`).join(''));
+  $('#st-keys').innerHTML = rows(
+    '<tr><th>key</th><th class="num">hits</th><th class="num">misses</th></tr>',
+    s.worst_keys.map(r=>`<tr><td><kbd>${r.ch===' '?'space':esc(r.ch)}</kbd></td>`
+      +`<td class="num">${r.hits}</td><td class="num">${r.misses}</td></tr>`).join(''));
+  $('#st-runs').innerHTML = rows(
+    '<tr><th>when</th><th>source</th><th class="num">wpm</th><th class="num">acc</th></tr>',
+    s.recent_runs.map(r=>`<tr><td>${new Date(r.ts*1000).toLocaleString()}</td>`
+      +`<td>${r.source}</td><td class="num">${Math.round(r.wpm)}</td>`
+      +`<td class="num">${Math.round(r.accuracy)}%</td></tr>`).join(''));
+}
+
+/* ================= wiring ================= */
+const VIEWS = ['learn','drill','typing','stats'];
+async function show(name){
+  ACTIVE = name;
+  VIEWS.forEach(v => {
+    $('#view-'+v).classList.toggle('on', v===name);
+    $('#nav-'+v).classList.toggle('on', v===name);
+  });
+  await LEARN.ensureSubmap();
+  await DRILL.ensureSubmap();
+  if (name==='stats') loadStats();
+  if (name==='typing' && !TY.text) TY.load();
+  if (name==='drill' && !DRILL.item) DRILL.next();
+}
+VIEWS.forEach(v => $('#nav-'+v).onclick = () => show(v));
+
+document.addEventListener('keydown', e => {
+  if (ACTIVE==='learn') LEARN.onKey(e);
+  else if (ACTIVE==='drill') DRILL.onKey(e);
+  else if (ACTIVE==='typing') TY.key(e);
+});
+window.addEventListener('beforeunload', () => {
+  if (LEARN.submap || DRILL.submap) navigator.sendBeacon('/api/submap/exit');
+});
+
+api('/api/decks').then(d => { LEARN.init(d.decks); DRILL.init(d.decks); });
+</script>
+</body>
+</html>

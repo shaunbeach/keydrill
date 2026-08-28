@@ -1,0 +1,28 @@
+# Runtime state. Your progress is personal, and the schema is recreated on
+# first run, so there is nothing here worth committing.
+keydrill.db
+keydrill.db-journal
+keydrill.db-wal
+keydrill.db-shm
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtualenvs, should anyone add dependencies later
+.venv/
+venv/
+env/
+
+# Logs and scratch output
+*.log
+nohup.out
+
+# Editor and OS noise
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+.DS_Store
